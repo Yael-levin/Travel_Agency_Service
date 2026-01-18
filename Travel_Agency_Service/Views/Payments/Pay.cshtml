@@ -1,0 +1,129 @@
+﻿@using Travel_Agency_Service.ViewModels
+@model PaymentViewModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h2 class="text-center mb-2">Payment</h2>
+<p class="text-center text-muted mb-4">
+    Complete your booking by entering your payment details
+</p>
+
+<div class="d-flex justify-content-center">
+    <div class="card p-4 auth-card booking-card">
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator mb-4">
+            <span class="step active">1</span>
+            <span class="step active">2</span>
+            <span class="step active">3</span>
+        </div>
+
+        <p class="mb-3 text-center">
+            <strong>Amount to pay:</strong>
+            <span class="text-primary fw-semibold">@ViewBag.Amount ₪</span>
+        </p>
+
+        <form asp-action="PayConfirm" asp-controller="Payments" method="post">
+
+            <input type="hidden" asp-for="BookingId" value="@ViewBag.BookingId" />
+
+            <!-- CARD NUMBER -->
+            <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <input asp-for="CardNumber"
+                       class="form-control"
+                       maxlength="19"
+                       placeholder="1234 5678 9012 3456"
+                       inputmode="numeric"
+                       oninput="formatCardNumber(this)" />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+
+            <!-- CVV -->
+            <div class="mb-3">
+                <label class="form-label">CVV</label>
+                <input asp-for="CVV"
+                       class="form-control"
+                       maxlength="3"
+                       inputmode="numeric"
+                       placeholder="123"
+                       oninput="this.value=this.value.replace(/\D/g,'')" />
+                <span asp-validation-for="CVV" class="text-danger"></span>
+            </div>
+
+            <!-- EXPIRATION -->
+            <div class="mb-3">
+                <label class="form-label">Expiration Date</label>
+                <input asp-for="ExpirationDate"
+                       class="form-control"
+                       placeholder="MM/YY"
+                       maxlength="5"
+                       inputmode="numeric"
+                       oninput="formatExpiry(this)" />
+                <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+            </div>
+
+            <!-- CARD HOLDER -->
+            <div class="mb-3">
+                <label class="form-label">Card Holder Name</label>
+                <input asp-for="CardHolderName"
+                       class="form-control"
+                       maxlength="30"
+                       oninput="this.value = this.value.replace(/[^a-zA-Zא-ת ]/g, '')" />
+                <span asp-validation-for="CardHolderName" class="text-danger"></span>
+            </div>
+
+            <!-- ID NUMBER -->
+            <div class="mb-4">
+                <label class="form-label">ID Number</label>
+                <input asp-for="IDNumber"
+                       class="form-control"
+                       maxlength="9"
+                       inputmode="numeric"
+                       placeholder="123456789"
+                       oninput="this.value=this.value.replace(/\D/g,'')" />
+                <span asp-validation-for="IDNumber" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Pay Now
+                </button>
+            </div>
+        </form>
+
+        <p class="text-muted text-center small mt-3">
+            Credit card details are validated but not stored.
+        </p>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '').substring(0, 16);
+            let formatted = value.match(/.{1,4}/g);
+            input.value = formatted ? formatted.join(' ') : '';
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '').substring(0, 4);
+            if (value.length >= 3) {
+                input.value = value.substring(0, 2) + '/' + value.substring(2);
+            } else {
+                input.value = value;
+            }
+        }
+    </script>
+}
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, '/Trips/Trips');
+    }
+</script>

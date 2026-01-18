@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Travel_Agency_Service.Models.Booking>
+
+@if (!Model.Any())
+{
+    <p class="text-center text-muted">
+        No bookings found for this user.
+    </p>
+}
+else
+{
+    
+    var total = Model.Count();
+    var paid = Model.Count(b => b.Status == BookingStatus.Paid);
+    var cancelled = Model.Count(b => b.Status == BookingStatus.Cancelled);
+    
+
+    <div class="mb-3">
+        <span class="badge bg-primary">Total: @total</span>
+        <span class="badge bg-success ms-2">Paid: @paid</span>
+        <span class="badge bg-secondary ms-2">Cancelled: @cancelled</span>
+    </div>
+
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Trip</th>
+                <th>Dates</th>
+                <th>Rooms</th>
+                <th>Status</th>
+                <th>From Waiting List</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>@b.Trip.Destination</td>
+                    <td>
+                        @b.Trip.StartDate.ToShortDateString()
+                        -
+                        @b.Trip.EndDate.ToShortDateString()
+                    </td>
+                    <td>@b.Rooms</td>
+                    <td>
+                        <span class="badge
+                            @(b.Status == BookingStatus.Paid ? "bg-success" :
+                              b.Status == BookingStatus.Booked ? "bg-warning" :
+                              "bg-secondary")">
+                            @b.Status
+                        </span>
+                    </td>
+                    <td>@(b.IsFromWaitingList ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

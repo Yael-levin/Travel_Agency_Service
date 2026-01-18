@@ -1,0 +1,250 @@
+﻿@model IEnumerable<Travel_Agency_Service.Models.User>
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">    
+    <h2 class="mb-0">👥 Manage Users</h2>
+
+    <button class="btn btn-outline-primary add-user-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addUserModal">
+        <span class="me-1">＋</span> Add User
+    </button>
+
+</div>
+
+
+<div class="admin-table-card">
+    <table class="table table-hover align-middle admin-users-table table-card">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.FullName</td>
+                    <td>@u.Email</td>
+                    <td>@u.Role</td>
+                    <td>
+                        @if (u.IsActive)
+                        {
+                            <span class="status-badge active">Active</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge blocked">Blocked</span>
+                        }
+
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+
+                            @if (u.Role != "Admin")
+                            {
+                               <a asp-action="ToggleActive"
+                                   asp-route-id="@u.UserId"
+                                   class="text-warning"
+                                   title="@(u.IsActive ? "Block user" : "Unblock user")">
+                                    <span class="action-icon">
+                                        @(u.IsActive ? "🚫" : "✅")
+                                    </span>
+                                </a>
+
+                                <button class="btn btn-link text-danger p-0"
+                                        title="Delete user"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteUserModal"
+                                        data-userid="@u.UserId"
+                                        data-username="@u.FullName">
+                                    <span class="action-icon">🗑️</span>
+                                </button>
+                            }
+
+                            <button class="btn btn-link text-info p-0"
+                                    title="Booking history"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#bookingHistoryModal"
+                                    data-userid="@u.UserId"
+                                    data-username="@u.FullName">
+                                <span class="action-icon">📜</span>
+                            </button>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="bookingHistoryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    📜 Booking History
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="bookingHistoryContent">
+                <p class="text-muted text-center">
+                    Loading booking history...
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUserModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Add User</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("_RegisterForm")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    ⚠️ Confirm User Deletion
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to permanently delete
+                    <strong id="deleteUserName"></strong>?
+                </p>
+                <p class="text-danger small">
+                    This action cannot be undone.
+                </p>
+
+                <div class="text-danger" id="deleteUserError"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger"
+                        id="confirmDeleteUserBtn">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        const modal = document.getElementById('bookingHistoryModal');
+
+        modal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const userId = button.getAttribute('data-userid');
+            const userName = button.getAttribute('data-username');
+
+            modal.querySelector('.modal-title').innerText =
+                'Booking History - ' + userName;
+
+            fetch('/AdminUsers/BookingHistory?userId=' + userId)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('bookingHistoryContent').innerHTML = html;
+                });
+        });
+    </script>
+
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const data = new FormData(form);
+
+            fetch('/AdminUsers/AddUser', {
+                method: 'POST',
+                body: data
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (!result.success) {
+                    document.getElementById('addUserError').innerText = result.message;
+                } else {
+                    location.reload(); // רענון רשימת משתמשים
+                }
+            });
+        });
+    </script>
+
+    <script>
+        let deleteUserId = null;
+
+        const deleteModal = document.getElementById('deleteUserModal');
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            deleteUserId = button.getAttribute('data-userid');
+            const userName = button.getAttribute('data-username');
+
+            document.getElementById('deleteUserName').innerText = userName;
+            document.getElementById('deleteUserError').innerText = '';
+        });
+
+        document.getElementById('confirmDeleteUserBtn')
+            .addEventListener('click', function () {
+
+                   fetch('/AdminUsers/DeleteUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'RequestVerificationToken':
+                    document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: 'userId=' + deleteUserId
+        })
+
+            .then(res => res.json())
+            .then(result => {
+                if (!result.success) {
+                    document.getElementById('deleteUserError').innerText =
+                        result.message;
+                } else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+}

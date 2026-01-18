@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Travel_Agency_Service.Models.ServiceReview>
+
+@if (!Model.Any())
+{
+    <p class="text-muted text-center my-4">
+        No reviews yet.
+    </p>
+}
+else
+{
+    <div class="service-reviews-outer">
+        <div class="service-reviews-track">
+
+            @foreach (var r in Model)
+            {
+                <div class="service-review-card-horizontal">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <strong>@r.User.FullName</strong>
+                            <span class="ms-1 text-warning">
+                                @string.Concat(Enumerable.Repeat("⭐", r.Rating))
+                            </span>
+                        </div>
+
+                        <small class="text-muted">
+                            @r.CreatedAt.ToShortDateString()
+                        </small>
+                    </div>
+
+                    <p class="mb-0">@r.Comment</p>
+
+                    @if (Context.Session.GetString("Role") == "Admin")
+                    {
+                        <button class="review-delete-btn"
+                                title="Delete review"
+                                onclick="deleteServiceReview(@r.ReviewId)">
+                            🗑️
+                        </button>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const outer = document.querySelector(".service-reviews-outer");
+        const track = document.querySelector(".service-reviews-track");
+
+        if (!outer || !track) return;
+
+        // אם אין overflow – לא עושים כלום
+        if (track.scrollWidth <= outer.clientWidth) return;
+
+        let scrollPos = 0;
+        let speed = 0.3;
+        let paused = false;
+
+        outer.addEventListener("mouseenter", () => paused = true);
+        outer.addEventListener("mouseleave", () => paused = false);
+
+        function autoScroll() {
+            if (!paused) {
+                scrollPos += speed;
+
+                if (scrollPos >= track.scrollWidth - outer.clientWidth) {
+                    scrollPos = 0;
+                }
+
+                outer.scrollLeft = scrollPos;
+            }
+
+            requestAnimationFrame(autoScroll);
+        }
+
+        autoScroll();
+    });
+</script>

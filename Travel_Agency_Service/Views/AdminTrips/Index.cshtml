@@ -1,0 +1,103 @@
+﻿@model List<Travel_Agency_Service.Models.Trip>
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+    <h2 class="mb-0">🧳 Manage Trips</h2>
+
+    <a asp-action="Create" class="btn btn-outline-primary add-trip-btn">
+        <span>＋</span> Create New Trip
+    </a>
+</div>
+
+@if (Context.Request.Query["error"] == "CannotDelete")
+{
+    <div class="alert alert-danger">
+        Cannot delete this trip – there are existing bookings.
+    </div>
+}
+
+<div class="admin-table-card">
+    <table class="table admin-trips-table table-card align-middle">
+        <thead>
+            <tr>
+                <th>Destination</th>
+                <th>Country</th>
+                <th>Dates</th>
+                <th>Price</th>
+                <th>Rooms</th>
+                <th>Visible</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trip in Model)
+            {
+                <tr>
+                    <td>@trip.Destination</td>
+                    <td>@trip.Country</td>
+                    <td>
+                        @trip.StartDate.ToShortDateString()
+                        –
+                        @trip.EndDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @{
+                            var hasActiveDiscount =
+                            trip.DiscountPrice != null &&
+                            trip.DiscountEndDate != null &&
+                            trip.DiscountEndDate >= DateTime.Today;
+                        }
+
+                        @if (hasActiveDiscount)
+                        {
+                            <span class="text-decoration-line-through text-muted me-1">
+                                @trip.Price ₪
+                            </span>
+                            <span class="fw-semibold text-primary">
+                                @trip.DiscountPrice ₪
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@trip.Price ₪</span>
+                        }
+                    </td>
+
+                    <td>@trip.AvailableRooms</td>
+                    <td>
+                        <span class="status-badge @(trip.IsVisible ? "active" : "blocked")">
+                            @(trip.IsVisible ? "Visible" : "Hidden")
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-3">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@trip.TripId"
+                               class="text-primary"
+                               title="Edit">
+                                <span class="action-icon">✏️</span>
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@trip.TripId"
+                               class="text-danger"
+                               title="Delete">
+                                <span class="action-icon">🗑️</span>
+                            </a>
+
+                            <a asp-action="ToggleVisibility"
+                               asp-route-id="@trip.TripId"
+                               class="text-secondary"
+                               title="@(trip.IsVisible ? "Hide" : "Show")">
+                                <span class="action-icon">
+                                    @(trip.IsVisible ? "👁️‍🗨️" : "👁️")
+                                </span>
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

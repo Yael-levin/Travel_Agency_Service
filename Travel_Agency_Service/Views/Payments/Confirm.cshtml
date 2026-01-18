@@ -1,0 +1,65 @@
+﻿@model Booking
+
+@{
+    ViewData["Title"] = "Confirm Booking";
+}
+
+<h2 class="text-center mb-2">Confirm Booking</h2>
+<p class="text-center text-muted mb-4">
+    Please review your booking details before proceeding to payment
+</p>
+
+<div class="d-flex justify-content-center">
+    <div class="card p-4 auth-card booking-card">
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator mb-4">
+            <span class="step active">1</span>
+            <span class="step active">2</span>
+            <span class="step">3</span>
+        </div>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="mb-3">
+            <p class="mb-2">
+                <strong>Trip:</strong>
+                <span class="text-muted">@Model.Trip.Destination</span>
+            </p>
+
+            <p class="mb-2">
+                <strong>Rooms:</strong>
+                <span class="text-muted">@Model.Rooms</span>
+            </p>
+
+            <p class="mb-3">
+                <strong>Total:</strong>
+                <span class="fw-semibold text-primary">
+                    @(Model.Rooms* Model.Trip.Price) ₪
+                </span>
+            </p>
+        </div>
+
+        <!-- WARNING -->
+        <div class="alert alert-warning rounded-3 small">
+            After confirming payment, booking details cannot be changed.
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="EditBooking"
+               asp-controller="Trips"
+               asp-route-bookingId="@Model.BookingId"
+               class="btn btn-outline-secondary">
+                Change booking
+            </a>
+
+            <a asp-action="Pay"
+               asp-controller="Payments"
+               asp-route-bookingId="@Model.BookingId"
+               class="btn btn-primary">
+                Proceed to Payment
+            </a>
+        </div>
+
+    </div>
+</div>

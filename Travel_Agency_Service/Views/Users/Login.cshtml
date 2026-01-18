@@ -1,0 +1,52 @@
+﻿<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 70vh;">
+
+    <div class="card shadow-sm p-4 auth-card">
+        <h2 class="text-center mb-4 text-primary">Login</h2>
+
+        <form method="post" asp-action="Login" asp-controller="Users">
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email"
+                       name="email"
+                       id="emailInput"
+                       autocomplete="email"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+
+                <div class="input-group">
+                    <input type="password"
+                           name="password"
+                           id="loginPassword"
+                           class="form-control password-field"
+                           autocomplete="current-password"
+                           required />
+
+                    <button class="btn btn-outline-secondary toggle-password"
+                            type="button"
+                            aria-label="Show/Hide password">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="text-danger text-center mb-3">
+                    @ViewBag.Error
+                </div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100 mt-2">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/email_autocomplete.js"></script>

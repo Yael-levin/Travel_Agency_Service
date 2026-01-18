@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Book Trip";
+}
+
+<h2 class="text-center mb-2">Book Trip</h2>
+<p class="text-center text-muted mb-4">
+    Choose how many rooms you’d like to reserve
+</p>
+
+<div class="d-flex justify-content-center">
+    <div class="card p-4 auth-card booking-card">
+
+        <form asp-action="Book" asp-controller="Trips" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- REQUIRED DATA -->
+            <input type="hidden" name="TripId" value="@ViewBag.TripId" />
+
+            @if ((bool)ViewBag.BuyNow)
+            {
+                <input type="hidden" name="buyNow" value="true" />
+            }
+            else
+            {
+                <input type="hidden" name="buyNow" value="false" />
+            }
+
+            <!-- STEP INDICATOR -->
+            <div class="step-indicator mb-4">
+                <span class="step active">1</span>
+                <span class="step">2</span>
+                <span class="step">3</span>
+            </div>
+
+            <!-- ROOMS -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Number of rooms
+                </label>
+                <input type="number"
+                       name="Rooms"
+                       min="1"
+                       class="form-control form-control-lg"
+                       value="@(ViewBag.Rooms ?? 1)"
+                       required />
+            </div>
+
+            <!-- TRIP FULL -->
+            @if (ViewBag.TripIsFull != null && (bool)ViewBag.TripIsFull)
+            {
+                <div class="alert alert-warning rounded-3 text-center mt-3">
+                    <p class="fw-semibold mb-3">
+                        This trip is currently full.<br />
+                        Would you like to join the waiting list?
+                    </p>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit"
+                                name="joinWaitingList"
+                                value="true"
+                                class="btn btn-primary px-4">
+                            Yes, join
+                        </button>
+
+                        <button type="submit"
+                                name="joinWaitingList"
+                                value="false"
+                                class="btn btn-outline-secondary px-4">
+                            No, thanks
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <!-- CONTINUE -->
+            @if (ViewBag.TripIsFull == null)
+            {
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Continue
+                    </button>
+                </div>
+
+                <p class="text-muted text-center mt-3 small">
+                    You can review your booking before payment
+                </p>
+            }
+
+        </form>
+
+    </div>
+</div>

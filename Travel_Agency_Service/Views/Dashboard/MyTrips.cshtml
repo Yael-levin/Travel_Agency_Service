@@ -1,0 +1,396 @@
+﻿@using System.Linq
+@using Travel_Agency_Service.Models
+
+@{
+    var payments = ViewBag.Payments as List<Payment>;
+}
+
+@model Travel_Agency_Service.ViewModels.DashboardViewModel
+
+<!-- ================= HEADER ================= -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">👋 My Trips</h2>
+
+    <button class="btn btn-outline-secondary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#changePasswordModal">
+        ⚙️ Change Password
+    </button>
+</div>
+
+<div class="row g-4">
+
+    <!-- ================= LEFT COLUMN ================= -->
+    <div class="col-lg-8">
+
+        <!-- ===== UPCOMING ===== -->
+        <h4 class="fw-semibold mb-3">✈️ Upcoming Trips</h4>
+
+        @if (!Model.UpcomingTrips.Any())
+        {
+            <div class="text-muted mb-4">No upcoming trips</div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var b in Model.UpcomingTrips.Take(3))
+                {
+                    var daysLeft = (b.Trip.StartDate.Date - DateTime.Today).Days;
+                    var imageUrl = string.IsNullOrEmpty(b.Trip.ImageUrl)
+                        ? "/images/default-trip.jpg"
+                        : b.Trip.ImageUrl;
+
+                    <div class="col-md-6 col-xl-4 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <img src="@imageUrl"
+                                 class="card-img-top"
+                                 style="height:160px; object-fit:cover;" />
+
+                            <div class="card-body">
+                                <h5 class="fw-bold">@b.Trip.Destination</h5>
+                                <div class="text-muted mb-1">
+                                    Starts in @daysLeft days
+                                </div>
+
+                                <span class="badge bg-info">@b.Status</span>
+
+                                <div class="d-grid gap-2 mt-3">
+                                    <a asp-action="DownloadBookingPdf"
+                                       asp-route-bookingId="@b.BookingId"
+                                       class="btn btn-outline-primary btn-sm">
+                                        📄 Itinerary
+                                    </a>
+
+                                    @if (b.Status == BookingStatus.Paid)
+                                    {
+                                        var payment = payments.FirstOrDefault(p => p.BookingId == b.BookingId);
+                                        if (payment != null)
+                                        {
+                                            <a asp-action="DownloadPaymentPdf"
+                                               asp-route-paymentId="@payment.PaymentId"
+                                               class="btn btn-outline-success btn-sm">
+                                                💳 Receipt
+                                            </a>
+                                        }
+                                    }
+
+                                    <a asp-action="CancelBooking"
+                                       asp-controller="Trips"
+                                       asp-route-bookingId="@b.BookingId"
+                                       class="btn btn-outline-danger btn-sm"
+                                       onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                        ❌ Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- ===== PAST ===== -->
+        <div class="accordion mt-4" id="pastTripsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-semibold"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#pastTripsCollapse">
+                        ⬇️ Past Trips (@Model.PastTrips.Count)
+                    </button>
+                </h2>
+
+                <div id="pastTripsCollapse" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+
+                        @if (!Model.PastTrips.Any())
+                        {
+                            <div class="text-muted">No past trips</div>
+                        }
+                        else
+                        {
+                            @foreach (var b in Model.PastTrips)
+                            {
+                                <div class="card mb-3">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold mb-1">@b.Trip.Destination</h6>
+                                            <small class="text-muted">
+                                                Ended on @b.Trip.EndDate.ToShortDateString()
+                                            </small>
+                                        </div>
+
+                                        <button class="btn btn-outline-warning btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addTripReviewModal-@b.Trip.TripId">
+                                            ⭐ Review
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= RIGHT COLUMN ================= -->
+    <div class="col-lg-4">
+
+        <!-- ===== CART ===== -->
+        <h4 class="fw-semibold mb-3">🛒 Cart</h4>
+
+        @if (!Model.PendingBookings.Any())
+        {
+            <div class="text-muted mb-4">Cart is empty</div>
+        }
+        else
+        {
+            @foreach (var b in Model.PendingBookings)
+            {
+                <div class="card mb-3 border-warning">
+                    <div class="card-body">
+                        <h6 class="fw-bold">@b.Trip.Destination</h6>
+                        <div>Rooms: <strong>@b.Rooms</strong></div>
+
+                        @if (b.IsFromWaitingList && b.PromotedAt.HasValue)
+                        {
+                            var expiresAt = b.PromotedAt.Value.AddHours(24);
+                            var timeLeft = expiresAt - DateTime.Now;
+
+                            if (timeLeft.TotalSeconds > 0)
+                            {
+                                <span class="badge bg-danger mt-2">
+                                    ⏰ @($"{timeLeft.Hours}h {timeLeft.Minutes}m left")
+                                </span>
+
+                                <div class="alert alert-warning p-2 mt-2">
+                                    Waiting list promotion – pay within 24h
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Expired</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark mt-2">
+                                Pending payment
+                            </span>
+                        }
+
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a asp-action="Confirm"
+                               asp-controller="Payments"
+                               asp-route-bookingId="@b.BookingId"
+                               class="btn btn-primary btn-sm">
+                                Pay
+                            </a>
+
+                            @if (!b.IsFromWaitingList)
+                            {
+                                <a asp-action="EditBooking"
+                                   asp-controller="Trips"
+                                   asp-route-bookingId="@b.BookingId"
+                                   class="btn btn-outline-secondary btn-sm">
+                                    Edit
+                                </a>
+                            }
+
+                            <a asp-action="CancelBooking"
+                               asp-controller="Trips"
+                               asp-route-bookingId="@b.BookingId"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Remove this booking?');">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        <!-- ===== WAITING LIST ===== -->
+        <h4 class="fw-semibold mb-3 mt-4">⏳ Waiting List</h4>
+
+        @if (!Model.WaitingTrips.Any())
+        {
+            <div class="text-muted">No waiting lists</div>
+        }
+        else
+        {
+            @foreach (var w in Model.WaitingTrips)
+            {
+                <div class="card mb-3 border-warning">
+                    <div class="card-body">
+                        <h6 class="fw-bold">@w.Trip.Destination</h6>
+
+                        <span class="badge bg-warning text-dark">
+                            @w.RoomsRequested rooms
+                        </span>
+
+                        <div class="text-muted mt-1">
+                            Joined @w.CreatedAt.ToShortDateString()
+                        </div>
+
+                        <form asp-action="LeaveWaitingList" method="post" class="mt-2">
+                            <input type="hidden"
+                                   name="waitingListId"
+                                   value="@w.WaitingListId" />
+
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm"
+                                    onclick="return confirm('Leave waiting list?');">
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- ================= MODALS – TRIP REVIEWS ================= -->
+@foreach (var b in Model.PastTrips)
+{
+    <div class="modal fade" id="addTripReviewModal-@b.Trip.TripId" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Review – @b.Trip.Destination</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="star-rating mb-2" data-tripid="@b.Trip.TripId">
+                        <input type="hidden"
+                               id="tripRating-@b.Trip.TripId"
+                               value="" />
+
+                        <span data-value="1">★</span>
+                        <span data-value="2">★</span>
+                        <span data-value="3">★</span>
+                        <span data-value="4">★</span>
+                        <span data-value="5">★</span>
+                    </div>
+
+
+                    <textarea class="form-control mb-2"
+                              rows="3"
+                              id="tripComment-@b.Trip.TripId"
+                              placeholder="Your experience..."></textarea>
+
+                    <div class="text-danger mb-2"
+                         id="tripReviewError-@b.Trip.TripId"></div>
+
+                    <button class="btn btn-primary w-100"
+                            onclick="addTripReview(@b.Trip.TripId)">
+                        Submit Review
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- ================= CHANGE PASSWORD MODAL ================= -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form id="changePasswordForm">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Password</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="changePasswordError" class="text-danger mb-2"></div>
+                    <div id="changePasswordSuccess" class="text-success mb-2"></div>
+
+                    <div class="input-group mb-2">
+                        <input type="password"
+                               name="currentPassword"
+                               class="form-control password-field"
+                               placeholder="Current password"
+                               required />
+                        <button class="btn btn-outline-secondary toggle-password"
+                                type="button">👁️</button>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <input type="password"
+                               name="newPassword"
+                               class="form-control password-field"
+                               placeholder="New password"
+                               required />
+                        <button class="btn btn-outline-secondary toggle-password"
+                                type="button">👁️</button>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <input type="password"
+                               name="confirmPassword"
+                               class="form-control password-field"
+                               placeholder="Confirm new password"
+                               required />
+                        <button class="btn btn-outline-secondary toggle-password"
+                                type="button">👁️</button>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Update Password
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('changePasswordForm')
+    .addEventListener('submit', function (e) {
+
+    e.preventDefault();
+
+    document.getElementById('changePasswordError').innerText = '';
+    document.getElementById('changePasswordSuccess').innerText = '';
+
+    const data = new FormData(e.target);
+
+    fetch('/Dashboard/ChangePassword', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (!result.success) {
+            document.getElementById('changePasswordError').innerText = result.message;
+        } else {
+            document.getElementById('changePasswordSuccess').innerText = 'Password updated successfully';
+            e.target.reset();
+            setTimeout(() => {
+                bootstrap.Modal.getInstance(
+                    document.getElementById('changePasswordModal')
+                ).hide();
+            }, 1200);
+        }
+    });
+});
+</script>

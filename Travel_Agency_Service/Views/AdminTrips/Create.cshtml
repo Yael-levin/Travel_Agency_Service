@@ -1,0 +1,129 @@
+﻿@model Travel_Agency_Service.Models.Trip
+
+<h2 class="text-center mt-3 mb-4">➕ Create New Trip</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mb-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form asp-action="Create" method="post">
+
+    <div class="edit-trip-grid">
+
+        <!-- Basic Info -->
+        <div class="edit-card">
+            <h5>📍 Basic Info</h5>
+
+            <label>Destination</label>
+            <input asp-for="Destination" class="form-control" />
+            <span asp-validation-for="Destination" class="text-danger"></span>
+
+            <label>Country</label>
+            <input asp-for="Country" class="form-control" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+
+            <label>Package Type</label>
+            <select asp-for="PackageType" class="form-select">
+                <option value="">-- Select Package --</option>
+                <option>Romantic</option>
+                <option>Family</option>
+                <option>Adventure</option>
+                <option>Luxury</option>
+                <option>Culture</option>
+            </select>
+        </div>
+
+        <!-- Dates -->
+        <div class="edit-card">
+            <h5>📅 Dates</h5>
+
+            <label>Start Date</label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+
+            <label>End Date</label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+        </div>
+
+        <!-- Pricing -->
+        <div class="edit-card">
+            <h5>💰 Pricing</h5>
+
+            <label>Price</label>
+            <input asp-for="Price" class="form-control" />
+
+            <label>Discount Price</label>
+            <input asp-for="DiscountPrice" class="form-control" />
+            <div>
+                <label>Discount End Date</label><br />
+                <input asp-for="DiscountEndDate"
+                       type="date"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Today.AddDays(7).ToString("yyyy-MM-dd")"
+                       class="form-control" />
+                <small class="text-muted">
+                    Max 7 days from today
+                </small>
+            </div>
+
+        </div>
+
+        <!-- Availability -->
+        <div class="edit-card">
+            <h5>🏨 Availability</h5>
+
+            <label>Available Rooms</label>
+            <input asp-for="AvailableRooms" class="form-control" />
+
+            <label>Age Limit</label>
+            <input asp-for="AgeLimit" class="form-control" />
+
+            <div class="form-check mt-2">
+                <input asp-for="IsVisible" class="form-check-input" />
+                <label class="form-check-label">Visible</label>
+            </div>
+        </div>
+
+        <!-- Media -->
+        <div class="edit-card">
+            <h5>🖼️ Media</h5>
+
+            <label>Image URL</label>
+            <input asp-for="ImageUrl" class="form-control" />
+        </div>
+
+        <!-- Description -->
+        <div class="edit-card">
+            <h5>📝 Description</h5>
+
+            <textarea asp-for="Description"
+                      class="form-control"
+                      rows="5"
+                      placeholder="Describe the trip experience..."></textarea>
+        </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a asp-action="Index"
+           class="btn btn-outline-secondary btn-sm px-4">
+            Cancel
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary btn-sm px-4">
+            Create Trip
+        </button>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

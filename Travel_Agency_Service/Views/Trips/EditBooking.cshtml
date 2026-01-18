@@ -1,0 +1,70 @@
+﻿@model Travel_Agency_Service.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit Booking";
+}
+
+<h2 class="text-center mb-2">Edit Booking</h2>
+<p class="text-center text-muted mb-4">
+    You can edit your booking details before payment
+</p>
+
+<div class="d-flex justify-content-center">
+    <div class="card p-4 auth-card booking-card">
+
+        <!-- TRIP INFO -->
+        <div class="mb-3">
+            <p class="mb-1">
+                <strong>Trip:</strong>
+                <span class="text-muted">@Model.Trip.Destination</span>
+            </p>
+            <p class="mb-1">
+                <strong>Start Date:</strong>
+                <span class="text-muted">@Model.Trip.StartDate.ToShortDateString()</span>
+            </p>
+        </div>
+
+        <hr />
+
+        <!-- ERROR MESSAGE -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger rounded-3 small">
+                @TempData["Error"]
+            </div>
+        }
+
+        <!-- FORM -->
+        <form asp-action="EditBooking" asp-controller="Trips" method="post">
+            <input type="hidden" name="bookingId" value="@Model.BookingId" />
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Number of rooms</label>
+                <input type="number"
+                       name="newRooms"
+                       value="@Model.Rooms"
+                       min="1"
+                       class="form-control form-control-lg"
+                       required />
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-between">
+                <a asp-action="MyTrips"
+                   asp-controller="Dashboard"
+                   class="btn btn-outline-secondary">
+                    Back to My Trips
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+
+        <p class="text-muted text-center small mt-3">
+            Changes are allowed until payment is completed
+        </p>
+
+    </div>
+</div>

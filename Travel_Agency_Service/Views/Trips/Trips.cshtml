@@ -1,0 +1,428 @@
+﻿@model IEnumerable<Travel_Agency_Service.Models.Trip>
+
+<div id="splash-screen">
+    <div class="sky">
+
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+        <div class="plane">✈</div>
+        <div class="plane-window-overlay"></div>
+
+
+        <div class="splash-content">
+
+            <div class="logo-wrapper">
+                <img src="~/images/logo suitcase.png"
+                     class="splash-suitcase"
+                     alt="Suitcase" />
+
+                <img src="~/images/logo tag.png"
+                     class="splash-tag"
+                     alt="Tag" />
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@if (Context.Request.Query["error"] == "AccessDenied")
+{
+    <div class="alert alert-danger">
+        You do not have permission to access this page.
+    </div>
+}
+
+
+<div class="container mt-5">
+
+    <div class="mb-4">
+        <h2 class="fw-bold mb-0">
+            ✈️ Trips Gallery
+        </h2>
+        <span class="text-muted small">
+            Showing @Model.Count() trips
+        </span>
+    </div>
+
+    <div class="card p-3 mb-4 shadow-sm">
+    <form method="get" class="mb-4">
+        <div class="row g-2">
+
+            <div class="col-md-4">
+                <input type="text"
+                       name="search"
+                       value="@Context.Request.Query["search"]"
+                       class="form-control"
+                       placeholder="Search by destination or country" />
+            </div>
+
+            <div class="col-md-3">
+                <select name="country" class="form-select">
+                    <option value="">All Countries</option>
+
+                    <option value="France" selected="@(Context.Request.Query["country"] == "France")">France</option>
+                    <option value="Italy" selected="@(Context.Request.Query["country"] == "Italy")">Italy</option>
+                    <option value="Spain" selected="@(Context.Request.Query["country"] == "Spain")">Spain</option>
+                    <option value="Greece" selected="@(Context.Request.Query["country"] == "Greece")">Greece</option>
+                    <option value="Austria" selected="@(Context.Request.Query["country"] == "Austria")">Austria</option>
+                </select>
+
+            </div>
+
+            <div class="col-md-3">
+                <select name="packageType" class="form-select">
+                    <option value="">All Packages</option>
+
+                    <option value="Romantic" selected="@(Context.Request.Query["packageType"] == "Romantic")">Romantic</option>
+                    <option value="Family" selected="@(Context.Request.Query["packageType"] == "Family")">Family</option>
+                    <option value="Adventure" selected="@(Context.Request.Query["packageType"] == "Adventure")">Adventure</option>
+                    <option value="Luxury" selected="@(Context.Request.Query["packageType"] == "Luxury")">Luxury</option>
+                    <option value="Culture" selected="@(Context.Request.Query["packageType"] == "Culture")">Culture</option>
+                </select>
+
+            </div>
+        </div>
+        
+        <div class="row g-2 mt-2">
+
+            <div class="col-md-2">
+                <input type="number"
+                       name="minPrice"
+                       class="form-control"
+                       placeholder="Min price"
+                       value="@Context.Request.Query["minPrice"]" />
+            </div>
+
+            <div class="col-md-2">
+                <input type="number"
+                       name="maxPrice"
+                       class="form-control"
+                       placeholder="Max price"
+                       value="@Context.Request.Query["maxPrice"]" />
+            </div>
+
+            <div class="col-md-2">
+                <input type="date"
+                       name="fromDate"
+                       class="form-control"
+                       placeholder="From date"
+                       value="@Context.Request.Query["fromDate"]" />
+            </div>
+
+            <div class="col-md-2">
+                <input type="date"
+                       name="toDate"
+                       class="form-control"
+                       placeholder="To date"
+                       value="@Context.Request.Query["toDate"]" />
+
+            </div>
+
+            <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill">
+                        🔍 Search Trips
+                    </button>
+            </div>
+
+        </div>
+
+        <div class="row g-2 mt-2">
+            <div class="col-md-4">
+                <select name="sort" class="form-select">
+                    <option value="">Sort By</option>
+
+                    <option value="price_asc"
+                            selected="@(Context.Request.Query["sort"] == "price_asc")">
+                        Price: Low to High
+                    </option>
+
+                    <option value="price_desc"
+                            selected="@(Context.Request.Query["sort"] == "price_desc")">
+                        Price: High to Low
+                    </option>
+
+                    <option value="date_asc"
+                            selected="@(Context.Request.Query["sort"] == "date_asc")">
+                        Date: Earliest First
+                    </option>
+
+                    <option value="date_desc"
+                            selected="@(Context.Request.Query["sort"] == "date_desc")">
+                        Date: Latest First
+                    </option>
+
+                    <option value="popular"
+                            selected="@(Context.Request.Query["sort"] == "popular")">
+                        Most Popular
+                    </option>
+
+                </select>
+            </div>
+        </div>
+
+        <div class="row g-2 mt-2">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="onSale"
+                           value="true"
+                           @(Context.Request.Query["onSale"] == "true" ? "checked" : "") />
+
+                    <label class="form-check-label">
+                        On Sale Only
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="includePast"
+                           value="true"
+                           @(Context.Request.Query["includePast"] == "true" ? "checked" : "") />
+                    <label class="form-check-label">
+                        Include past trips (for reviews)
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+    </div>
+
+    <div class="row">
+        @foreach (var trip in Model)
+        {
+            var waitingCounts = ViewBag.WaitingCounts as Dictionary<int, int>;
+            var waitingCount = waitingCounts != null && waitingCounts.ContainsKey(trip.TripId) ? waitingCounts[trip.TripId] : 0;
+            bool isPast = trip.EndDate.Date < DateTime.Today;
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    <img src="@(string.IsNullOrEmpty(trip.ImageUrl)
+                                  ? "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+                                  : trip.ImageUrl)"
+                     class="card-img-top"
+                     style="height:200px; object-fit:cover;"
+                     alt="@trip.Destination"
+                     loading="lazy" />
+
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center">
+                            <span class="d-inline-flex align-items-center gap-2 justify-content-center">
+                                @trip.Destination
+
+                            @if (isPast)
+                                {
+                                    <span class="badge bg-danger">PAST</span>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(trip.Description))
+                                {
+                                    <span class="info-wrapper">
+                                        ℹ️
+                                        <span class="info-tooltip">
+                                            @trip.Description
+                                        </span>
+                                    </span>
+                                }
+
+                                <button class="btn btn-link p-0 text-warning"
+                                        style="font-size: 0.95rem;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#tripReviewsModal"
+                                        data-tripid="@trip.TripId"
+                                        data-destination="@trip.Destination"
+                                        title="View reviews">
+                                    ⭐
+                                </button>
+                            </span>
+                        </h5>
+
+
+                        <p class="text-muted mb-1">@trip.Country</p>
+
+                        <p class="mb-2">
+                            @trip.StartDate.ToString("dd/MM/yyyy")
+                            -
+                            @trip.EndDate.ToString("dd/MM/yyyy")
+                        </p>
+
+                    @if (trip.DiscountPrice != null
+                                        && trip.DiscountEndDate != null
+                                        && trip.DiscountEndDate >= DateTime.Today)
+                        {
+                            <p>
+                                <span class="text-decoration-line-through text-muted">
+                                    @trip.Price ₪
+                                </span>
+                                <span class="fw-bold text-danger ms-2">
+                                    @trip.DiscountPrice ₪
+                                </span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fw-bold text-primary">
+                                @trip.Price ₪
+                            </p>
+                        }
+                        @if (waitingCount > 0)
+                        {
+                            <p class="text-warning fw-bold mt-2">
+                                ⏳ @waitingCount people waiting
+                            </p>
+                        }
+
+                    </div>
+
+                    <div class="card-footer text-center bg-white">
+
+                        @{
+                            var paidRooms = ViewBag.PaidRooms as Dictionary<int, int>;
+                            int booked = paidRooms != null && paidRooms.ContainsKey(trip.TripId)
+                            ? paidRooms[trip.TripId]
+                            : 0;
+
+                            int availableNow = trip.AvailableRooms - booked;
+                        }
+
+                        <span class="badge bg-success">
+                            Rooms available: @availableNow
+                        </span>
+
+
+                        @if (trip.AgeLimit != null)
+                        {
+                            <span class="badge bg-warning text-dark ms-2">
+                                Age @trip.AgeLimit+
+                            </span>
+                        }
+                        @if (!isPast)
+                        {
+                            <div class="mt-2">
+                                <a asp-controller="Trips"
+                                   asp-action="Book"
+                                   asp-route-id="@trip.TripId"
+                                   class="btn btn-outline-primary btn-sm me-2">
+                                    Add To Cart
+                                </a>
+
+                                <a asp-controller="Trips"
+                                   asp-action="Buy"
+                                   asp-route-id="@trip.TripId"
+                                   class="btn btn-primary btn-sm">
+                                    Buy Now
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mt-2 text-muted fw-bold">
+                                This trip has already ended
+                            </div>
+                        }
+                        
+
+                    </div>
+
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="serviceReviewsSection" class="mt-5 border-top pt-4">
+
+    <h4 class="text-center mb-4">
+        ⭐ What people say about us
+    </h4>
+
+    <div class="mx-auto"
+         style="max-width: 700px; max-height: 300px; overflow-y: auto;">
+
+        @await Html.PartialAsync("_ServiceReviewsList", ViewBag.ServiceReviews as IEnumerable<ServiceReview>)
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="tripReviewsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="tripReviewsTitle">Trip Reviews</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="tripReviewsContent">
+                <p class="text-muted text-center">Loading reviews...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<a href="#serviceReviewsSection"
+   class="btn btn-warning fab-btn shadow"
+   style="
+        position: fixed;
+        bottom: 90px;
+        right: 30px;
+        z-index: 1000;
+   "
+   title="Jump to reviews">
+    ⭐
+</a>
+
+
+
+<script>
+    let currentTripId = null;
+
+    const reviewsModal = document.getElementById('tripReviewsModal');
+
+    reviewsModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        currentTripId = button.getAttribute('data-tripid');
+        const destination = button.getAttribute('data-destination');
+
+        document.getElementById('tripReviewsTitle').innerText =
+            'Reviews – ' + destination;
+
+        loadTripReviews(currentTripId);
+    });
+
+    function loadTripReviews(tripId) {
+        fetch('/TripReviews/ByTrip?tripId=' + tripId)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('tripReviewsContent').innerHTML = html;
+            });
+    }
+</script>
+
+<script>
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            const splash = document.getElementById("splash-screen");
+            splash.style.opacity = "0";
+            splash.style.transition = "opacity 0.6s ease";
+
+            setTimeout(() => {
+                splash.remove();
+            }, 600);
+        }, 2200);
+    });
+</script>

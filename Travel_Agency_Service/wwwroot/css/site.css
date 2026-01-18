@@ -1,0 +1,1135 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+ }
+.fab-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+
+.info-wrapper {
+    position: relative;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.info-tooltip {
+    display: none;
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    width: 230px;
+    font-size: 13px;
+    border: 1px solid #bbdefb;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+#serviceReviewFab {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+}
+
+
+.info-wrapper:hover .info-tooltip {
+    display: block;
+}
+
+/* ===== LIGHT SKY NAVBAR ===== */
+
+.custom-navbar-light {
+    background: linear-gradient(90deg, #f8fbff, #e3f2fd);
+    height: 64px;
+    padding: 0.8rem 1.5rem;
+    border-bottom: 1px solid #dbeafe;
+}
+
+.custom-navbar-light .navbar-brand {
+     color: #0d6efd;
+        font-size: 1.4rem;
+        letter-spacing: 0.4px;
+    }
+
+.custom-navbar-light .navbar-brand:hover {
+            color: #084298;
+        }
+
+.custom-navbar-light .nav-link {
+        color: #0b5ed7;
+        font-weight: 500;
+        margin-left: 1rem;
+        padding: 6px 12px;
+        border-radius: 999px;
+        transition: all 0.25s ease;
+    }
+    
+.custom-navbar-light .nav-link:hover {
+            background-color: rgba(13, 110, 253, 0.1); /* תכלת עדין */
+            color: #084298;
+            text-decoration: none;
+        }
+
+.custom-navbar-light .nav-link.active {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: #084298;
+        }
+
+
+.custom-navbar-light .navbar-toggler {
+        border-color: #cfe2ff;
+    }
+
+.custom-navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2813,110,253,0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+footer.footer {
+    background-color: #f8fbff;
+    font-size: 0.9rem;
+    padding: 3px 0; 
+    margin-top: 20px;
+}
+
+/* ===== AUTH PAGES (LOGIN / REGISTER) ===== */
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    background-color: #ffffff;
+}
+.auth-card h2 {
+        font-weight: 700;
+    }
+
+/* ===== PASSWORD TOGGLE BUTTON ===== */
+.toggle-password {
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f1f7ff;
+    border-left: none;
+}
+
+    .toggle-password:hover {
+        background-color: #e7f1ff;
+    }
+
+
+/* ===== logo =====*/
+.custom-navbar-light .navbar-brand img {
+    transition: transform 0.2s ease;
+}
+
+.custom-navbar-light .navbar-brand:hover img {
+    transform: scale(1.05);
+}
+/* ===== NAVBAR LOGO ===== */
+
+.navbar-logo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    transform: translateY(4px);
+}
+
+
+.brand-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+
+/* =======*/
+
+/* ===== MODALS – GENERAL ===== */
+.modal-content {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.modal-body {
+    padding-top: 1rem;
+}
+
+/* ===== REVIEW MODAL ===== */
+.modal .form-select,
+.modal textarea,
+.modal input {
+    border-radius: 10px;
+}
+
+.modal textarea {
+    resize: none;
+}
+
+.modal .btn-primary {
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* ===== SUCCESS / ERROR ===== */
+.modal .text-success {
+    background: #e7f7ef;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.modal .text-danger {
+    background: #fdecea;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+/* ===== GLOBAL MODAL MESSAGE FIX ===== */
+
+/* כל הודעה ריקה בתוך modal – לא תופסת מקום */
+.modal .text-danger:empty,
+.modal .text-success:empty,
+.modal .alert:empty,
+.modal .feedback-message:empty {
+        display: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+}
+
+    /* כשיש תוכן – עיצוב יפה */
+    .modal .text-danger:not(:empty),
+    .modal .text-success:not(:empty),
+    .modal .alert:not(:empty),
+    .modal .feedback-message:not(:empty) {
+        display: block;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+    }
+.modal .alert {
+    margin-bottom: 0.75rem;
+}
+
+/* === book === */
+.booking-card {
+    max-width: 480px;
+}
+
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.step.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+/* ===== REVIEWS CLEAN STYLE ===== */
+
+.review-item {
+    position: relative;
+}
+
+    /* ביטול קווים/פסים */
+    .review-item,
+    .review-item.border,
+    .review-item.border-bottom {
+        border: none !important;
+    }
+
+/* DELETE ICON */
+.review-delete-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 4px;
+    color: #adb5bd; /* אפור עדין */
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+    .review-delete-btn:hover {
+        color: #dc3545; /* אדום ב-hover */
+    }
+
+/* ===== SERVICE REVIEWS – AUTO SCROLL ===== */
+
+.service-reviews-outer {
+    overflow: hidden;
+    width: 100%;
+}
+
+.service-reviews-track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+}
+
+/* כרטיס רחב יותר */
+.service-review-card-horizontal {
+    flex: 0 0 380px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    position: relative;
+}
+
+    .service-review-card-horizontal:hover {
+        box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+    }
+
+    /* DELETE */
+    .service-review-card-horizontal .review-delete-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 12px;
+        background: transparent;
+        border: none;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        cursor: pointer;
+    }
+
+        .service-review-card-horizontal .review-delete-btn:hover {
+            color: #dc3545;
+        }
+/* ===================================================== */
+/* =============== ADMIN USERS – CLEAN ================= */
+/* ===================================================== */
+
+/* כפתור Add User */
+.add-user-btn {
+    border-radius: 12px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* מעטפת הטבלה */
+.admin-table-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    padding: 0;
+}
+
+/* הטבלה */
+.admin-users-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    background: #ffffff;
+}
+
+    /* Header */
+    .admin-users-table thead th {
+        background: #e3f2fd;
+        color: #0d47a1;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 14px 18px;
+        border-bottom: 1px solid #bbdefb;
+    }
+
+        /* פינות עליונות */
+        .admin-users-table thead th:first-child {
+            border-top-left-radius: 18px;
+        }
+
+        .admin-users-table thead th:last-child {
+            border-top-right-radius: 18px;
+        }
+
+    /* תאי גוף */
+    .admin-users-table tbody td {
+        padding: 14px 18px;
+        font-size: 0.95rem;
+        border-top: 1px solid #eef2f7;
+        vertical-align: middle;
+    }
+
+    /* Hover */
+    .admin-users-table tbody tr:hover td {
+        background: #f5f9ff;
+    }
+
+    /* פינות תחתונות */
+    .admin-users-table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 18px;
+    }
+
+    .admin-users-table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 18px;
+    }
+
+/* סטטוסים */
+.status-badge {
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+    .status-badge.active {
+        background: #e6f4ea;
+        color: #198754;
+    }
+
+    .status-badge.blocked {
+        background: #fdecea;
+        color: #dc3545;
+    }
+
+/* אייקוני פעולות */
+.action-icon {
+    font-size: 1.05rem;
+    opacity: 0.65;
+    transition: all 0.15s ease;
+}
+
+.admin-users-table a:hover .action-icon,
+.admin-users-table button:hover .action-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* כפתורי פעולה */
+.admin-users-table .btn-link {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 0;
+}
+
+    .admin-users-table .btn-link:hover {
+        color: #0d6efd;
+    }
+
+    .admin-users-table .btn-link.text-danger:hover {
+        color: #dc3545;
+    }
+
+/* ניקוי Bootstrap */
+.admin-users-table > :not(caption) > * > * {
+    box-shadow: none;
+}
+
+
+/* ===== ADD USER FORM ===== */
+
+#addUserForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+    /* Labels */
+    #addUserForm label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #495057;
+        margin-bottom: 0.2rem;
+    }
+
+    /* Inputs */
+    #addUserForm .form-control {
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.9rem;
+        border: 1px solid #dee2e6;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        #addUserForm .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.15rem rgba(13,110,253,0.15);
+        }
+
+    /* Password group */
+    #addUserForm .input-group {
+        align-items: center;
+    }
+
+    /* Eye button */
+    #addUserForm .toggle-password {
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+        font-size: 0.95rem;
+        background: #f1f7ff;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+        #addUserForm .toggle-password:hover {
+            background: #e7f1ff;
+            color: #0d6efd;
+        }
+
+/* Error message */
+#addUserError {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fdecea;
+}
+
+/* Submit button */
+#addUserForm .btn-primary {
+    margin-top: 0.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.55rem;
+    font-size: 0.95rem;
+}
+/* ===== BOOKING HISTORY (ADMIN) ===== */
+
+/* Empty state */
+#bookingHistoryContent p.text-muted {
+    font-size: 0.9rem;
+    padding: 1rem 0;
+}
+
+/* Summary badges (Total / Paid / Cancelled) */
+#bookingHistoryContent .badge {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* Table wrapper feel */
+#bookingHistoryContent table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+/* Header */
+#bookingHistoryContent thead th {
+    background: #e3f2fd;
+    color: #0d47a1;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 12px 14px;
+    border-bottom: 1px solid #bbdefb;
+}
+
+    /* Rounded header corners */
+    #bookingHistoryContent thead th:first-child {
+        border-top-left-radius: 14px;
+    }
+
+    #bookingHistoryContent thead th:last-child {
+        border-top-right-radius: 14px;
+    }
+
+/* Body cells */
+#bookingHistoryContent tbody td {
+    font-size: 0.85rem;
+    padding: 12px 14px;
+    border-top: 1px solid #eef2f7;
+    vertical-align: middle;
+}
+
+/* Hover row */
+#bookingHistoryContent tbody tr:hover td {
+    background: #f5f9ff;
+}
+
+/* Status badges inside table */
+#bookingHistoryContent .badge.bg-success {
+    background: #e6f4ea !important;
+    color: #198754;
+}
+
+#bookingHistoryContent .badge.bg-warning {
+    background: #fff4e5 !important;
+    color: #b58105;
+}
+
+#bookingHistoryContent .badge.bg-secondary {
+    background: #f1f3f5 !important;
+    color: #6c757d;
+}
+
+/* Waiting list Yes / No */
+#bookingHistoryContent tbody td:last-child {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Small table look fix */
+#bookingHistoryContent table.table-sm > :not(caption) > * > * {
+    padding: 12px 14px;
+}
+
+/* Remove default bootstrap borders */
+#bookingHistoryContent table.table-bordered > :not(caption) > * {
+    border: none;
+}
+
+/* ===== Admin Trips ===== */
+
+.add-trip-btn {
+    border-radius: 10px;
+    padding: 0.45rem 1.1rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+    .add-trip-btn span {
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+
+/* טבלת כרטיס */
+.admin-trips-table.table-card {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    background: #ffffff;
+}
+
+/* Header */
+.admin-trips-table thead th {
+    background: #e3f2fd;
+    color: #0d47a1;
+    font-weight: 700;
+    border-bottom: 1px solid #bbdefb;
+    padding: 14px 16px;
+}
+
+    /* פינות עגולות */
+    .admin-trips-table thead th:first-child {
+        border-top-left-radius: 16px;
+    }
+
+    .admin-trips-table thead th:last-child {
+        border-top-right-radius: 16px;
+    }
+
+/* תאים */
+.admin-trips-table tbody td {
+    padding: 14px 16px;
+    border-top: 1px solid #eef2f7;
+    vertical-align: middle;
+}
+
+/* Hover */
+.admin-trips-table tbody tr:hover td {
+    background: #f5f9ff;
+}
+
+/* פינות תחתונות */
+.admin-trips-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+}
+
+.admin-trips-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+}
+
+/* ביטול קווי bootstrap */
+.admin-trips-table > :not(caption) > * > * {
+    box-shadow: none;
+}
+/* ===== Edit Trip Dashboard – Compact ===== */
+
+.edit-trip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem; /* היה 1.25 */
+}
+
+/* Card */
+.edit-card {
+    background: #ffffff;
+    border-radius: 14px; /* קטן יותר */
+    padding: 0.9rem 1rem; /* צמצום פנימי */
+    box-shadow: 0 5px 14px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+    /* Card title */
+    .edit-card h5 {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+
+    /* Labels */
+    .edit-card label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+        color: #495057;
+    }
+
+    /* Inputs & selects */
+    .edit-card .form-control,
+    .edit-card .form-select {
+        font-size: 0.82rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 9px;
+    }
+
+    /* Textarea (Description) */
+    .edit-card textarea {
+        min-height: 130px; /* קצת יותר קומפקטי */
+        resize: vertical;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        padding: 0.55rem 0.65rem;
+        border-radius: 10px;
+    }
+
+    /* Checkbox */
+    .edit-card .form-check-label {
+        font-size: 0.8rem;
+    }
+
+/* ===== Buttons – Centered & Pretty ===== */
+
+.edit-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+    /* Base button */
+    .edit-actions .btn {
+        font-size: 0.85rem;
+        padding: 0.45rem 1.4rem;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    /* Cancel */
+    .edit-actions .btn-outline-secondary {
+        border-color: #ced4da;
+        color: #495057;
+    }
+
+        .edit-actions .btn-outline-secondary:hover {
+            background: #f1f5f9;
+        }
+
+    /* Save */
+    .edit-actions .btn-primary {
+        box-shadow: 0 6px 14px rgba(13,110,253,0.25);
+    }
+
+        .edit-actions .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .edit-trip-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-trip-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Edit Trip Buttons ===== */
+
+.btn-sm {
+    font-size: 0.85rem;
+    border-radius: 10px;
+}
+
+.btn-outline-secondary {
+    background: #ffffff;
+}
+
+    .btn-outline-secondary:hover {
+        background: #f1f5f9;
+    }
+/* ===== System Rules ===== */
+
+.system-rules-card {
+    max-width: 520px;
+    background: #ffffff;
+    padding: 1.75rem 2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+    /* Labels */
+    .system-rules-card .form-label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #495057;
+    }
+
+    /* Inputs */
+    .system-rules-card .form-control {
+        border-radius: 12px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    /* Button */
+    .system-rules-card .btn-primary {
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.6rem 2.5rem;
+    }
+
+    /* Success alert */
+    .system-rules-card + .alert-success {
+        max-width: 520px;
+        margin: 1rem auto 0;
+        border-radius: 12px;
+        font-size: 0.9rem;
+    }
+
+/* ===== STAR RATING ===== */
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+    .star-rating span {
+        font-size: 2rem;
+        cursor: pointer;
+        color: #ddd; /* ריק */
+        transition: color 0.2s, transform 0.15s;
+    }
+
+        .star-rating span.filled {
+            color: #ffc107; /* צהוב */
+        }
+
+        .star-rating span:hover {
+            transform: scale(1.15);
+        }
+
+/* ===splash=== */
+#splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(180deg, #dff1ff, #b6ddff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cloud {
+    position: absolute;
+    width: 220px;
+    height: 70px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 999px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    animation: moveClouds linear infinite;
+    opacity: 0.95;
+    filter: blur(0.3px);
+}
+
+    .cloud::before,
+    .cloud::after {
+        content: "";
+        position: absolute;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+    }
+
+    .cloud::before {
+        width: 70px;
+        height: 70px;
+        top: -35px;
+        left: 40px;
+    }
+
+    .cloud::after {
+        width: 90px;
+        height: 90px;
+        top: -45px;
+        left: 100px;
+    }
+
+
+.cloud-1 {
+    top: 22%;
+    left: 20%;
+    animation-duration: 40s;
+}
+
+.cloud-2 {
+    top: 45%;
+    left: 50%;
+    animation-duration: 55s;
+}
+
+.cloud-3 {
+    top: 65%;
+    left: 30%;
+    animation-duration: 48s;
+}
+.cloud-4 {
+    top: 33%;
+    left: 76%;
+    animation-duration: 60s;
+    opacity: 0.9;
+}
+
+
+
+@keyframes moveClouds {
+    from {
+        transform: translateX(-120px);
+    }
+
+    to {
+        transform: translateX(120px);
+    }
+}
+
+.splash-content {
+    text-align: center;
+    z-index: 2;
+}
+
+
+
+.logo-stack {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+}
+
+.logo-base {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* רק התגית */
+.logo-tag {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* חיתוך של אזור התג */
+    clip-path: polygon( 10% 22%, 65% 6%, 78% 14%, 72% 72%, 18% 86%, 6% 74% );
+    transform-origin: 28% 18%;
+    animation: tagGrow 1.1s ease-out forwards;
+}
+
+@keyframes tagGrow {
+    0% {
+        transform: translateX(-50%) translateY(-14px) scale(0.6);
+        opacity: 0;
+    }
+
+    80% {
+        transform: translateX(-50%) translateY(0) scale(1.25);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+
+.plane {
+    position: absolute;
+    top: 45%;
+    left: 20%;
+    font-size: 48px;
+    opacity: 0.55;
+    animation: flyPlane 4s linear infinite;
+    z-index: 1;
+}
+
+@keyframes flyPlane {
+    from {
+        transform: translate(0, 0) rotate(20deg);
+    }
+
+    to {
+        transform: translate(80vw, -120px) rotate(20deg);
+    }
+}
+
+
+
+.logo-wrapper {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: auto;
+}
+
+.splash-suitcase {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.splash-tag {
+    position: absolute;
+    top: 86px;
+    left: 47%;
+    width: 175px;
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top center;
+    opacity: 0;
+    z-index: 2;
+    animation: tagGrow 2.1s cubic-bezier(.22,.8,.3,1) forwards;
+}
+/* ===============================
+   Plane Window – REAL Window
+   =============================== */
+
+:root {
+    --window-width: 34vmin;
+    --window-height: 50vmin;
+}
+
+/* ===== שכבת כיסוי – חור אמיתי ===== */
+.plane-window-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    /* כיסוי מסביב בלבד */
+    background: rgba(225, 240, 255, 0.92);
+    -webkit-mask-image: radial-gradient(ellipse 50vmin 70vmin at center, transparent 0%, transparent 50%, black 68% );
+    mask-image: radial-gradient( ellipse 50vmin 70vmin at center, transparent 0%, transparent 50%, black 68% );
+    opacity: 0;
+    animation: windowFadeIn 1.6s ease forwards;
+    animation-delay: 1.1s;
+}
+
+    /* ===== מסגרת חלון המטוס (בלי מילוי!) ===== */
+    .plane-window-overlay::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: calc(var(--window-width) * 2);
+        height: calc(var(--window-height) * 2);
+        transform: translate(-50%, -50%) scale(1.3);
+        border-radius: 50% / 60%;
+        /* המסגרת בלבד */
+        border: 14px solid #e5e7eb;
+        /* הצללות שנותנות עומק */
+        box-shadow: inset 0 0 0 6px #f8fafc, 0 30px 80px rgba(0,0,0,0.28);
+        animation: windowZoomIn 1.6s cubic-bezier(.25,.8,.3,1) forwards;
+        animation-delay: 1.1s;
+    }
+
+/* ===== אנימציות ===== */
+@keyframes windowFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes windowZoomIn {
+    from {
+        transform: translate(-50%, -50%) scale(1.35);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
