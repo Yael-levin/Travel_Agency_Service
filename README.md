@@ -1,4 +1,4 @@
-# Travel Agency Service – MVC Web Application
+# Travel Agency Service - MVC Web Application
 
 A full-featured travel agency management system developed as a course project for  
 **Introduction to Computer Communications**.
