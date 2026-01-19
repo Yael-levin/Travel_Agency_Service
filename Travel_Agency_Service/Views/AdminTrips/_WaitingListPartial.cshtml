@@ -1,0 +1,41 @@
+﻿@model List<Travel_Agency_Service.Models.WaitingList>
+
+<h5 class="mb-3">Waiting List</h5>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        There are no users in the waiting list for this trip.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Rooms</th>
+                <th>Joined</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in Model)
+            {
+                <tr>
+                    <td>@w.User.FullName</td>
+                    <td>@w.User.Email</td>
+                    <td>@w.RoomsRequested</td>
+                    <td>@w.CreatedAt.ToString("dd/MM HH:mm")</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="removeWaiting(@w.WaitingListId, @w.TripId)">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

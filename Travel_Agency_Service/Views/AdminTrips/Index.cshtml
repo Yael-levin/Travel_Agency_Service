@@ -93,6 +93,11 @@
                                     @(trip.IsVisible ? "👁️‍🗨️" : "👁️")
                                 </span>
                             </a>
+                            <button class="btn btn-secondary btn-sm"
+                                    onclick="loadWaitingList(@trip.TripId)">
+                                Waiting List
+                            </button>
+
 
                         </div>
                     </td>
@@ -100,4 +105,28 @@
             }
         </tbody>
     </table>
+    <div id="waitingListContainer" class="mt-4"></div>
+
 </div>
+
+<script>
+    function loadWaitingList(tripId) {
+        fetch('/AdminTrips/WaitingListPartial/' + tripId)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('waitingListContainer').innerHTML = html;
+            });
+    }
+
+    function removeWaiting(waitingListId, tripId) {
+        fetch('/AdminTrips/RemoveFromWaitingList', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `waitingListId=${waitingListId}`
+        }).then(() => {
+            loadWaitingList(tripId);
+        });
+    }
+</script>

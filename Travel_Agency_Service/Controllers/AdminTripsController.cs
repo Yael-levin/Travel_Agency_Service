@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Travel_Agency_Service.Data;
 using Travel_Agency_Service.Filters;
 using Travel_Agency_Service.Models;
+using Travel_Agency_Service.Services;
+
 
 namespace Travel_Agency_Service.Controllers
 {
@@ -10,10 +12,14 @@ namespace Travel_Agency_Service.Controllers
     public class AdminTripsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly EmailService _emailService;
 
-        public AdminTripsController(ApplicationDbContext context)
+
+        public AdminTripsController(ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
+
         }
 
         public IActionResult Index()
@@ -138,6 +144,8 @@ namespace Travel_Agency_Service.Controllers
 
             if (existingTrip == null)
                 return NotFound();
+            int oldAvailableRooms = existingTrip.AvailableRooms;
+
 
             // 🚫 אם יש הזמנות – אסור לשנות תאריכים
             if (existingTrip.Bookings.Any())
@@ -242,6 +250,12 @@ namespace Travel_Agency_Service.Controllers
             }
 
             _context.SaveChanges();
+            // ✅ אם נוספו חדרים – לקדם Waiting List
+            if (trip.AvailableRooms > oldAvailableRooms)
+            {
+                PromoteWaitingList(existingTrip.TripId);
+            }
+
 
             return RedirectToAction("Index");
         }
@@ -265,6 +279,95 @@ namespace Travel_Agency_Service.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        private void PromoteWaitingList(int tripId)
+        {
+
+            var trip = _context.Trips.First(t => t.TripId == tripId);
+
+            int bookedRooms = _context.Bookings
+            .Where(b =>
+            b.TripId == tripId &&
+            (
+            b.Status == BookingStatus.Paid ||
+            (b.Status == BookingStatus.Booked && b.IsFromWaitingList)
+            )
+            )
+            .Sum(b => b.Rooms);
+
+
+            int availableRooms = trip.AvailableRooms - bookedRooms;
+
+            // ⬅️ טוענים פעם אחת FIFO
+            var waitingQueue = _context.WaitingList
+                .Where(w => w.TripId == tripId)
+                .OrderBy(w => w.CreatedAt)
+                .ToList();
+
+            foreach (var w in waitingQueue)
+            {
+                if (availableRooms <= 0)
+                    break;
+
+                // FIFO אמיתי – לא מדלגים
+                if (w.RoomsRequested > availableRooms)
+                    break;
+
+                var booking = new Booking
+                {
+                    TripId = tripId,
+                    UserId = w.UserId,
+                    Rooms = w.RoomsRequested,
+                    BookingDate = DateTime.Now,
+                    Status = BookingStatus.Booked,
+                    IsFromWaitingList = true,
+                    PromotedAt = DateTime.Now
+                };
+
+                _context.Bookings.Add(booking);
+                _context.WaitingList.Remove(w);
+
+                availableRooms -= w.RoomsRequested;
+
+                // 📧 מייל
+                var user = _context.Users.FirstOrDefault(u => u.UserId == w.UserId);
+                if (user != null && !string.IsNullOrEmpty(user.Email))
+                {
+                    _emailService.SendWaitingListPromotionEmail(user.Email, trip);
+                }
+            }
+
+            _context.SaveChanges();
+        }
+        public IActionResult WaitingListPartial(int id)
+        {
+            var waitingList = _context.WaitingList
+                .Where(w => w.TripId == id)
+                .OrderBy(w => w.CreatedAt)
+                .Include(w => w.User)
+                .ToList();
+
+            ViewBag.TripId = id;
+            return PartialView("_WaitingListPartial", waitingList);
+        }
+
+
+        [HttpPost]
+        public IActionResult RemoveFromWaitingList(int waitingListId)
+        {
+            var entry = _context.WaitingList
+                .FirstOrDefault(w => w.WaitingListId == waitingListId);
+
+            if (entry == null)
+                return NotFound();
+
+            _context.WaitingList.Remove(entry);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
 
 
     }
