@@ -1,4 +1,4 @@
-# Travel Agency Service – MVC Web Application
+# Travel Agency Service - MVC Web Application
 
 A full-featured travel agency management system developed as a course project for  
 **Introduction to Computer Communications**.
@@ -65,9 +65,9 @@ cancellations, email notifications, and PDF generation.
 ## Booking Logic
 
 - Each booking has one of three statuses:
-  - **Booked (0)** – a shopping cart item that does **not** reserve rooms
-  - **Paid (1)** – a confirmed booking that **reserves rooms**
-  - **Canceled (2)** – a canceled booking that does **not** reserve rooms
+  - **Booked (0)** â€“ a shopping cart item that does **not** reserve rooms
+  - **Paid (1)** â€“ a confirmed booking that **reserves rooms**
+  - **Canceled (2)** â€“ a canceled booking that does **not** reserve rooms
 
 - Rooms are reserved **only after successful payment**
 - Users promoted from the waiting list have **24 hours** to complete payment
@@ -165,8 +165,8 @@ Emails include trip images, booking details, Logo, and branded HTML layout.
 - Database was created **manually in SQL Server Management Studio**
 - Entity Framework Core is used **without migrations**
 - The database is provided in two formats:
-    - `TravelAgencyDB.bak` – Full SQL Server backup (schema + data)
-    - `TravelAgencyDB.sql` – SQL script for recreating the database
+    - `TravelAgencyDB.bak` â€“ Full SQL Server backup (schema + data)
+    - `TravelAgencyDB.sql` â€“ SQL script for recreating the database
 
 ### Main Tables
 - Users
@@ -182,12 +182,12 @@ Emails include trip images, booking details, Logo, and branded HTML layout.
 
 ## Database Setup Options
 
-### Option 1 – Restore from `.bak`
+### Option 1 â€“ Restore from `.bak`
 1. Open SQL Server Management Studio
 2. Restore the database from the provided `.bak` file
 3. Update the connection string in `appsettings.json`
 
-### Option 2 – Run SQL Script
+### Option 2 â€“ Run SQL Script
 1. Open SQL Server Management Studio
 2. Run the provided `.sql` script
 3. Update the connection string in `appsettings.json`
@@ -207,15 +207,15 @@ Emails include trip images, booking details, Logo, and branded HTML layout.
 
 ## Project Structure (MVC)
 
-- **Controllers** – request handling and business logic
-- **Models** – database entities
-- **ViewModels** – data transfer objects for views
-- **Views** – Razor UI pages
-- **Services** – email notifications, PDF generation, system logic
-- **Helpers** – password hashing
-- **Filters** – authorization and system maintenance
-- **Data** – database context
-- **wwwroot** – static files (CSS, JS, images)
+- **Controllers** â€“ request handling and business logic
+- **Models** â€“ database entities
+- **ViewModels** â€“ data transfer objects for views
+- **Views** â€“ Razor UI pages
+- **Services** â€“ email notifications, PDF generation, system logic
+- **Helpers** â€“ password hashing
+- **Filters** â€“ authorization and system maintenance
+- **Data** â€“ database context
+- **wwwroot** â€“ static files (CSS, JS, images)
 
 ---
 
